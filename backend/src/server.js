@@ -7,8 +7,9 @@ dotenv.config()
 const PORT = process.env.PORT
 
 
-ConnectDB()  // creating connection with DB
 
+ConnectDB()  // creating connection with DB
 app.listen(PORT,()=>{
     console.log("server is running on port "+PORT)  
+    
 })
