@@ -3,6 +3,7 @@ import bcryptjs from "bcryptjs"
 import dotenv from "dotenv"
 import imagekit from "../services/storage.service.js"
 import generateToken from "../utils/generateJwtToken.js"
+import { sendWelcomeEmail } from "../emails/emailHandlers.js"
 
 dotenv.config()
 
@@ -29,7 +30,7 @@ const Register =async(req,res)=>{
    
     generateToken(user._id ,res);
 
-   return res.status(201).json({
+    res.status(201).json({
         message:"user created success",
         user:{
             id:user._id,
@@ -38,6 +39,12 @@ const Register =async(req,res)=>{
             profilePic:user.profilePic
         }
     })
+
+    try{
+         await sendWelcomeEmail(user.email,user.username ,process.env.clientURL )
+    }catch(err){
+        return res.status(400).json({messgae:"ERROR at sending welcome email"})
+    }
 
 }
 
