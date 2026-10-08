@@ -1,1 +1,2 @@
-7-10-2026  => created the boiler plate of the project  (40 min)
+7-10-2026  => created the boiler plate of the project  
+              user authentication part completed (backend)
