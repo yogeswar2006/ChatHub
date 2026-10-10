@@ -16,5 +16,14 @@ const UploadFile=async(file)=>{
         return response
 }
 
-export default {UploadFile}
+const UploadImage=async(image)=>{
+  const response = await client.files.upload({
+    image,
+    fileName:"image_"+Date.now()+".jpg"
+  })
+
+  return response
+}
+
+export default {UploadFile,UploadImage}
 
