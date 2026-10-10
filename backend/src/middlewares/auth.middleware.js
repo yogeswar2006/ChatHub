@@ -7,7 +7,7 @@ import userModel from "../models/user.model.js";
    try{
          const token=req.cookies.jwt
             if(!token){
-                return res.status(400).json({message:"Invalid request"});
+                return res.status(401).json({message:"Unauthorized"});
             }
         
         const decoded=  jwt.verify(token,process.env.SECRET_KEY)
@@ -19,14 +19,15 @@ import userModel from "../models/user.model.js";
         const user= await userModel.findById(decoded.id);
 
         if(!user){
-            return res.status(400).json({message:"user not found"})
+            return res.status(401).json({message:"Unauthorized"})
         }
 
             req.user=user
             next();
 
    }catch(err){
-     return res.status(400).json({message:"Invalid credentials",err})
+  
+     return res.status(401).json({message:"Unauthorized",err})
    }
 
 }
