@@ -63,7 +63,7 @@ const Login =async (req,res)=>{
     const isValidPassword = await bcryptjs.compare(password,user.password);
 
     if(!isValidPassword){
-        return res.status(401).json({message:"Unauthorized"})
+        return res.status(400).json({message:"Unauthorized"})
     }
 
     generateToken(user._id,res);
@@ -83,7 +83,7 @@ const Login =async (req,res)=>{
 
 const Logout =(req,res)=>{
 
-    res.clearCookie("token");
+    res.clearCookie("jwt");
 
     res.status(200).json({
         message:"Loggedout Success"
@@ -91,5 +91,31 @@ const Logout =(req,res)=>{
 
 }
 
+const UpdateProfile=async(req,res)=>{
 
-export default {Register,Login,Logout}
+   try{
+        const {username,email}=req.body;
+    //updating profile logic....
+
+    const file=req.file
+
+    const result=await imagekit.UploadFile(file.buffer.toString("base64"));
+
+    const user= await userModel.findOne({email});
+
+    if(!user){
+        return res.status(404).json({message:"user not found"});
+    }
+
+   const updatedUser=await userModel.findByIdAndUpdate(user._id,{username:username,email:email,profilePic:result.url},{new:true})
+
+   return  res.status(200).json({message:"User details updated success",updatedUser});
+
+   }catch(err){
+      return res.status(400).json({message:"Error at updating profile",err})
+   }
+
+}
+
+
+export default {Register,Login,Logout,UpdateProfile}
