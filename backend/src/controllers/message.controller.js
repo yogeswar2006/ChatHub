@@ -24,11 +24,11 @@ const getMessagesByUserId = async (req, res) => {
         const messages = await messageModel.find({
             $or: [
                 { senderId: myId, receiverId: otherChatId },
-                { senderId: otherChatId, receiverid: myId }
+                { senderId: otherChatId, receiverId: myId }
             ]
         })
 
-        return res.status(200).json(messages)
+        return res.status(200).json({messages})
     } catch (error) {
         return res.status(500).json({ message: "Internal server error" });
     }
@@ -37,18 +37,18 @@ const getMessagesByUserId = async (req, res) => {
 const sendMessage = async (req, res) => {
     try {
         const { id: receiverId } = req.params;
-        const { text, image } = req.body
-
-
+        const { text=""} = req.body
+        
         const myId = req.user._id;
-        const imageUrl = "";
+        const image=req.file
+        let imageUrl = "";
 
         if (image) {
-            const result = await imagekit.UploadImage(image);
+            const result = await imagekit.UploadImage(image.buffer.toString("base64"));
             imageUrl = result.url;
         }
 
-
+    
 
         const newMessage = new messageModel({
             senderId: myId,

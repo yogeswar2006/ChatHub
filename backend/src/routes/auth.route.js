@@ -19,6 +19,6 @@ router.post("/logout",authController.Logout)
 router.put("/update/profile",Protected.ProtectedRoute,upload.single("profilePic"),authController.UpdateProfile)
 // router.patch("/update/password",Protected.ProtectedRoute,authController.updatePassword);
 
-router.get("/check",Protected.ProtectedRoute,(req,res)=>{res.json({message:"user details",user:req.user})});
+router.get("/check",Protected.ProtectedRoute,authController.getCurrentUser);
 
 export default router

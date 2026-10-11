@@ -6,7 +6,8 @@ import cors from "cors"
 import "dotenv/config"
 
 const app=express();
-app.use(express.json())  // middleware
+app.use(express.json({limit:"10mb"}))  // middleware
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(cors({origin:process.env.clientURL,credentials:true}))  // cors middleware
 app.use(cookieParser())
 
