@@ -1,4 +1,4 @@
-import React, { useEffect ,useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import { useAuthStore } from '../store/useAuthStore'
 import ChatHeader from './ChatHeader'
@@ -8,15 +8,19 @@ import MessageInput from './MessageInput'
 
 function ChatContainer() {
 
-  const {messages,getMessagesUserById,selectedUser,isMessagesLoading}=useChatStore()
-  const {authUser}=useAuthStore()
+  const { messages, getMessagesUserById, selectedUser, isMessagesLoading, subscribeToMessages, unsubscribeFromMessages } = useChatStore()
+  const { authUser } = useAuthStore()
   const messageEndRef = useRef(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     getMessagesUserById(selectedUser._id)
-  },[selectedUser,getMessagesUserById])
+    subscribeToMessages()
 
-   useEffect(() => {
+    //clean up
+    return ()=>unsubscribeFromMessages()
+  }, [selectedUser, getMessagesUserById,subscribeToMessages,unsubscribeFromMessages])
+
+  useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -24,8 +28,8 @@ function ChatContainer() {
 
   return (
     <>
-      <ChatHeader/>
-       <div className="flex-1 px-6 overflow-y-auto py-8">
+      <ChatHeader />
+      <div className="flex-1 px-6 overflow-y-auto py-8">
         {messages.length > 0 && !isMessagesLoading ? (
           <div className="max-w-3xl mx-auto space-y-6">
             {messages.map((msg) => (
@@ -34,11 +38,10 @@ function ChatContainer() {
                 className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}
               >
                 <div
-                  className={`chat-bubble relative ${
-                    msg.senderId === authUser._id
+                  className={`chat-bubble relative ${msg.senderId === authUser._id
                       ? "bg-cyan-600 text-white"
                       : "bg-slate-800 text-slate-200"
-                  }`}
+                    }`}
                 >
                   {msg.image && (
                     <img src={msg.image} alt="Shared" className="rounded-lg h-48 object-cover" />

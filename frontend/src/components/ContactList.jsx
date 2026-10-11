@@ -25,6 +25,13 @@ function ContactList() {
             <div className={`avatar ${onlineUsers.includes(contact._id) ? "online":"offline"} `}>
               <div className="size-12 rounded-full">
                 <img src={contact.profilePic || "/avatar.png"} />
+                 <span
+                  className={`absolute bottom-0 right-0 z-10 size-3 rounded-full ring-2 ring-base-100 ${
+                    onlineUsers.includes(String(contact._id))
+                      ? "bg-green-500"
+                      : "bg-gray-400"
+                  }`}
+                 />
               </div>
             </div>
             <h4 className="text-slate-200 font-medium">{contact.username}</h4>
