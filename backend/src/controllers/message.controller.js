@@ -1,6 +1,7 @@
 import messageModel from "../models/message.model.js";
 import userModel from "../models/user.model.js";
 import imagekit from "../services/storage.service.js"
+import { getReceiverSocketId,io } from "../lib/socket.io.js";
 
 
 const getAllContacts = async (req, res) => {
@@ -61,6 +62,10 @@ const sendMessage = async (req, res) => {
         await newMessage.save()
 
         // todo : implement real time chatting feature  
+        const receiverSocketId=getReceiverSocketId(receiverId);
+        if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage",newMessage)
+        }
 
         return res.status(201).json({ message: "Message sent success", newMessage })
     } catch (error) {

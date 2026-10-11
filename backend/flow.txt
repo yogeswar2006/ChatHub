@@ -1,6 +1,0 @@
-7-10-2026  => created the boiler plate of the project  
-              user authentication part completed (backend)
-
- 
- 10-10-2026 => ArcJet => Used to impleemnt ratelimiting.. (implemted Rate limiting....)
- 

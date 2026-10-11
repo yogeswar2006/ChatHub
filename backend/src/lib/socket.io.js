@@ -17,7 +17,13 @@ const io= new Server(server,{
     }
 })
 
+
+
 io.use(sockectAuthMiddleware);
+
+export const getReceiverSocketId=(receiverId)=>{
+    return userSocketMap[receiverId]
+}
 
 const userSocketMap={} //{userId:socketId}
 
