@@ -117,5 +117,15 @@ const UpdateProfile=async(req,res)=>{
 
 }
 
+const getCurrentUser =async(req,res)=>{
+    try{
+          const user=await userModel.findById({_id:req.user._id}).select("-password")
 
-export default {Register,Login,Logout,UpdateProfile}
+         res.status(200).json({message:"user details",user})
+    }catch(err){
+        res.status(400).json({message:"Bad request"})
+    }
+}
+
+
+export default {Register,Login,Logout,UpdateProfile,getCurrentUser}

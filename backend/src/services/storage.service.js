@@ -18,7 +18,7 @@ const UploadFile=async(file)=>{
 
 const UploadImage=async(image)=>{
   const response = await client.files.upload({
-    image,
+    file:image,
     fileName:"image_"+Date.now()+".jpg"
   })
 
