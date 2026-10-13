@@ -31,7 +31,7 @@ export const useAuthStore = create((set,get) => ({
     },
 
     signUp:async(formData)=>{
-        console.log(FormData)
+        // console.log(FormData)
 
         set({isSigningUp:true})
         try{
@@ -61,7 +61,7 @@ export const useAuthStore = create((set,get) => ({
     },
 
     login:async(data)=>{
-        console.log(data)
+        // console.log(data)
 
         set({isLoggingIn:true})
         try{
